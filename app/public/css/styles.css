@@ -1,34 +1,31 @@
 /* see https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
 body{
 	font-family: 'Literata', serif;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .container {
     display: flex;
     flex-flow: row wrap; /* we'll wrap */
-    width: 48rem;
+    width: 35rem;
 }
 
 .header, .blog, .footer {
     flex: 1 100%;
+    text-align: left;
 }
 
 .header {
-    background: #f0f080;
     text-align: center;
 }
 
 .footer {
-    background: #f080f0;
     padding: 10px;
     text-align: center;
 }
 
 .blog {
-    background: #80f080;
     padding: 10px;
 }
 
 .blog { flex: 3 0px; }
-.sidebar { flex: 1 0px; }
