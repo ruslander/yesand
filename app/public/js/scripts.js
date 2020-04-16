@@ -4,6 +4,8 @@ var defaultContent = "The 'Yes' portion of the rule encourages the acceptance of
 var title;
 var content;
 
+function splitLines(t) { return t.split(/\r\n|\r|\n/); }
+
 function calReadTime(text){
 	var wordCount = text.replace( /[^\w ]/g, "" ).split( /\s+/ ).length;
 
@@ -11,14 +13,9 @@ function calReadTime(text){
     return readingTimeInMinutes + " min";
 }
 
-function autoSave() {
-
-  	$("#saved").text(new Date().toLocaleTimeString());
+function autoStat() {
   	$("#words").text(content.split(" ").length);
   	$("#reading-time").text(calReadTime(content));
-
-  	store.set('title', title); 
-  	store.set('content', content);
 }
 
 var fullscreen = false;
@@ -53,10 +50,14 @@ function closeFullscreen() {
 
 $(function() {
 	title = store.get('title') != null ? store.get('title') : defaultTitle;
-	content = store.get('content') != null ? store.get('content') : defaultContent;
+	content = splitLines(store.get('content') != null ? store.get('content') : defaultContent);
 
   	$(".art-title").text(title);
-  	$(".art-content").text(content);
+
+  	for (p in content) {
+	  	$("#content")
+	  		.append($( "<p>" + content[p] + "</p>" ));
+	}
 
   	$("#new-article").click(function() {
   		title = defaultTitle;
@@ -78,16 +79,18 @@ $(function() {
 	var titleEditor = new MediumEditor('.art-title');
 	titleEditor.subscribe('editableInput', function (event, editorElement) {
 		title = editorElement.innerText;
+		store.set('title', title); 
 	  	console.log("title: " + title);
 	});
 
 	var contentEditor = new MediumEditor('.art-content');
 	contentEditor.subscribe('editableInput', function (event, editorElement) {
 		content = editorElement.innerText;
-		console.log("body: " + content);
+  		store.set('content', content);
+		console.log("content: " + content);
 	});
 
-  	setInterval(autoSave, 5000);
+  	setInterval(autoStat, 5000);
 });
 
 
