@@ -21,6 +21,36 @@ function autoSave() {
   	store.set('content', content);
 }
 
+var fullscreen = false;
+
+function openFullscreen() {
+  var elem = document.documentElement;
+
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) { /* Firefox */
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    elem.msRequestFullscreen();
+  }
+}
+
+function closeFullscreen() {
+  var elem = document.documentElement;
+
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
+}
+
 $(function() {
 	title = store.get('title') != null ? store.get('title') : defaultTitle;
 	content = store.get('content') != null ? store.get('content') : defaultContent;
@@ -34,6 +64,15 @@ $(function() {
 
         $(".art-title").text(defaultTitle);
   		$(".art-content").text(defaultContent);
+    });
+
+    $("#no-distractions").click(function() {
+    	if(fullscreen) 
+    		closeFullscreen();
+    	else 
+    		openFullscreen();
+
+  		fullscreen = !fullscreen;
     });
 
 	var titleEditor = new MediumEditor('.art-title');
