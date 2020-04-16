@@ -48,23 +48,53 @@ function closeFullscreen() {
   }
 }
 
-$(function() {
-	title = store.get('title') != null ? store.get('title') : defaultTitle;
-	content = store.get('content') != null ? store.get('content') : defaultContent;
-
-  $(".art-title").text(title);
-
+function renderContent(content){
+  $("#content").empty();
   splitLines(content).forEach(function(entry) {
     $("#content")
       .append($("<p>" + entry + "</p>"));
   });
+}
+
+function renderTitle(title){
+  $(".art-title").text(title);
+}
+
+$(function() {
+	title = store.get('title') != null ? store.get('title') : defaultTitle;
+	content = store.get('content') != null ? store.get('content') : defaultContent;
+
+  renderTitle(title);
+  renderContent(content);
 
   $("#new-article").click(function() {
   	title = defaultTitle;
   	content = defaultContent;
 
-    $(".art-title").text(defaultTitle);
-  	$(".art-content").text(defaultContent);
+    renderTitle(title);
+  	renderContent(content);
+  });
+
+  $('#open-article').on("change", function(evt){ 
+
+    var reader = new FileReader();
+    reader.onloadend = function(evt2) {
+      if (evt2.target.readyState == FileReader.DONE) { // DONE == 2
+          //console.log(evt2.target.result);
+          renderContent(evt2.target.result);
+      }
+    };
+
+    var file = evt.target.files[0];
+    title = file.name;
+    renderTitle(title);
+
+    reader.readAsText(file);
+  });
+
+  $("#save-as").click(function() {
+    var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, title + ".txt");
   });
 
   $("#no-distractions").click(function() {

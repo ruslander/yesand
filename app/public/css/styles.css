@@ -17,3 +17,20 @@ body{
 :focus {
     outline: -webkit-focus-ring-color auto 0px;
 }
+
+a, label {
+	color: blue;
+}
+
+label{
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+label:hover{
+  text-decoration: underline;
+}
+
+#open-article{
+  display:none;
+}
