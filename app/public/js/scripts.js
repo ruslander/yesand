@@ -50,31 +50,31 @@ function closeFullscreen() {
 
 $(function() {
 	title = store.get('title') != null ? store.get('title') : defaultTitle;
-	content = splitLines(store.get('content') != null ? store.get('content') : defaultContent);
+	content = store.get('content') != null ? store.get('content') : defaultContent;
 
-  	$(".art-title").text(title);
+  $(".art-title").text(title);
 
-  	for (p in content) {
-	  	$("#content")
-	  		.append($( "<p>" + content[p] + "</p>" ));
-	}
+  splitLines(content).forEach(function(entry) {
+    $("#content")
+      .append($("<p>" + entry + "</p>"));
+  });
 
-  	$("#new-article").click(function() {
-  		title = defaultTitle;
-  		content = defaultContent;
+  $("#new-article").click(function() {
+  	title = defaultTitle;
+  	content = defaultContent;
 
-        $(".art-title").text(defaultTitle);
-  		$(".art-content").text(defaultContent);
-    });
+    $(".art-title").text(defaultTitle);
+  	$(".art-content").text(defaultContent);
+  });
 
-    $("#no-distractions").click(function() {
-    	if(fullscreen) 
-    		closeFullscreen();
-    	else 
-    		openFullscreen();
+  $("#no-distractions").click(function() {
+  	if(fullscreen) 
+  		closeFullscreen();
+  	else 
+  		openFullscreen();
 
-  		fullscreen = !fullscreen;
-    });
+  	fullscreen = !fullscreen;
+  });
 
 	var titleEditor = new MediumEditor('.art-title');
 	titleEditor.subscribe('editableInput', function (event, editorElement) {
@@ -90,7 +90,7 @@ $(function() {
 		console.log("content: " + content);
 	});
 
-  	setInterval(autoStat, 5000);
+  setInterval(autoStat, 5000);
 });
 
 
