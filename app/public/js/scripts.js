@@ -1,15 +1,31 @@
-var title = new MediumEditor('.art-title');
-title.subscribe('editableInput', function (event, editorElement) {
-	var titleText = editorElement.innerText;
-  	
-  	console.log("title: " + titleText)
-  	store('title', titleText); 
+var title = "";
+var content = "";
+
+
+
+var titleEditor = new MediumEditor('.art-title');
+titleEditor.subscribe('editableInput', function (event, editorElement) {
+	title = editorElement.innerText;
+  	console.log("title: " + title)
 });
 
-var content = new MediumEditor('.art-content');
-content.subscribe('editableInput', function (event, editorElement) {
-	var bodyText = editorElement.innerText;
-  	
-  	console.log("body: " + bodyText)
-  	store('body', bodyText)
+var contentEditor = new MediumEditor('.art-content');
+contentEditor.subscribe('editableInput', function (event, editorElement) {
+	content = editorElement.innerText;
+	console.log("body: " + content)
 });
+
+
+
+function autoSave() {
+  	var d = new Date();
+  	var t = d.toLocaleTimeString();
+  	document.getElementById("saved").innerHTML = t;
+
+  	store('title', title); 
+  	store('body', content)
+
+  	document.getElementById('words').innerHTML = content.split(" ").length;
+}
+
+setInterval(autoSave, 5000);
