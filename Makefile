@@ -2,8 +2,11 @@
 build:
 	docker build -t yesand -f continer/Dockerfile .
 
-run:
-	docker run -p 8080:8080 yesand
+start:
+	docker run -d -p 8080:8080 yesand:latest
+
+stop:
+	docker stop $$(docker ps | awk -v image=yesand:latest '$$2 == image {print $$1}')
 
 
 mount:
