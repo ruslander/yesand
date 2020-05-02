@@ -13,4 +13,4 @@ RUN bundle install --without development test
 
 EXPOSE 8080
 
-CMD ["bundle", "exec", "rackup", "--host", "0.0.0.0", "-p", "8080"]
+ENTRYPOINT ["ruby", "src/app.rb"]
